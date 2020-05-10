@@ -1,3 +1,6 @@
+#ifndef LOOPNEST_H
+#define LOOPNEST_H
+
 #include <vector>
 #include <stdio.h>
 #include <string>
@@ -67,6 +70,8 @@ public:
   int iters_at_level(int start_loop_level);
   
   float bandwidth_for_cache(int datatype_bytes, int cache_bytes, int iters_per_cycle, int & lvl);
+  float bandwidth_for_scratchpad(Array* array,
+      int datatype_bytes, int scratchpad_bytes, int iters_per_cycle, int & lvl);
 
   void print_volume_analysis();
 
@@ -75,3 +80,4 @@ public:
 };
 
 
+#endif

@@ -10,6 +10,7 @@
 #include <math.h>
 
 #include "loopnest.hh"
+#include "diannao.hh"
 
 using namespace std;
 
@@ -110,9 +111,10 @@ void add_example_mm(std::vector<Loopnest>& lns) {
 
 
 
-
 int main(int argc, char* argv[]) {
  
+  DianNao diannao_model;
+
   std::vector<Loopnest> lns;
   add_example_conv(lns);
   add_example_mm(lns);
@@ -123,10 +125,23 @@ int main(int argc, char* argv[]) {
   lns[0].print_volume_analysis();
   lns[0].print_bandwidth_analysis();
 
+  float flops = 
+  diannao_model.get_flops(lns[0],&lns[0].arrays[0],
+                                 &lns[0].arrays[1],
+                                 &lns[0].arrays[2]);
+  printf("DianNao Flops %f\n", flops);
+
   printf("\n");
   printf(" ----- Example MM Analysis ----- \n");
   lns[1].print_volume_analysis();
   lns[1].print_bandwidth_analysis();
+
+  flops = 
+  diannao_model.get_flops(lns[1],&lns[1].arrays[0],
+                                 &lns[1].arrays[1],
+                                 &lns[1].arrays[2]);
+  printf("DianNao Flops %f\n", flops);
+
 
   return 0;
 }

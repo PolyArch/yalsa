@@ -86,6 +86,35 @@ float Loopnest::bandwidth_for_cache(int datatype_bytes, int cache_bytes,
   return bytes_per_cycle;
 }
 
+// datatype_bytes: # bytes in one data item
+// cache_bytes: # bytes in cache 
+// return value: # bytes / cycle required
+// iter: iteration number that fits in cache
+float Loopnest::bandwidth_for_scratchpad(Array* arr, int datatype_bytes, 
+    int scratchpad_bytes, int iters_per_cycle, int & lvl) {
+
+  int total_volume;   
+  
+  for(lvl=0; lvl < loops.size(); ++lvl) {
+    total_volume = volume_at_level(*arr,lvl);
+    total_volume *= datatype_bytes;
+
+    if(total_volume < scratchpad_bytes) {
+      break;
+    }
+  }
+  int iters = iters_at_level(lvl);
+
+  if(lvl == loops.size()) {
+    total_volume += volume_at_level(*arr,lvl);
+    total_volume*=datatype_bytes;
+  }
+
+  float bytes_per_cycle = (float) total_volume / ((float)iters / (float)iters_per_cycle);
+
+  return bytes_per_cycle;
+}
+
 void Loopnest::print_volume_analysis() {
   printf("Array Volumes by Loop Level: (in element count)\n");
 
