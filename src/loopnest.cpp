@@ -106,8 +106,8 @@ float Loopnest::bandwidth_for_scratchpad(Array* arr, int datatype_bytes,
   int iters = iters_at_level(lvl);
 
   if(lvl == loops.size()) {
-    total_volume += volume_at_level(*arr,lvl);
-    total_volume*=datatype_bytes;
+    total_volume = volume_at_level(*arr,lvl);
+    total_volume *= datatype_bytes;
   }
 
   float bytes_per_cycle = (float) total_volume / ((float)iters / (float)iters_per_cycle);
